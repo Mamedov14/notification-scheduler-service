@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: notification-scheduler-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    properties:
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+
+messaging:
+  consume:
+    exchange: notification
+    notification:
+      queue: ${messaging.consume.exchange}.queue
+      routingKey: ${messaging.consume.exchange}.routing-key
+  produce:
+    notification:
+      exchange: ${messaging.consume.exchange}
+      routingKey: ${messaging.consume.exchange}.routing-key
+
