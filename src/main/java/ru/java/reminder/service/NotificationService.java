@@ -1,12 +1,10 @@
 package ru.java.reminder.service;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobBuilder;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.springframework.stereotype.Service;
 import ru.java.reminder.dto.NotificationRequest;
@@ -25,8 +23,7 @@ public class NotificationService {
     private final Scheduler scheduler;
     private final NotificationRepository notificationRepository;
 
-    @SneakyThrows
-    public void scheduleNotification(NotificationRequest request) {
+    public void scheduleNotification(final NotificationRequest request) {
         var notification = ScheduledNotification.builder()
                 .message(request.getMessage())
                 .notificationTime(request.getNotificationTime())
@@ -37,7 +34,8 @@ public class NotificationService {
         scheduleJob(notification);
     }
 
-    private void scheduleJob(final ScheduledNotification notification) throws SchedulerException {
+    @SneakyThrows
+    private void scheduleJob(final ScheduledNotification notification) {
         var jobDetail = JobBuilder.newJob(NotificationJob.class)
                 .withIdentity("notificationJob" + notification.getId(), "notifications")
                 .usingJobData("notificationId", notification.getId())

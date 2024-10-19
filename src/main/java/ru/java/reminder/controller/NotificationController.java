@@ -17,7 +17,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @PostMapping("/schedule")
-    public ResponseEntity<String> scheduleNotification(@RequestBody NotificationRequest request) {
+    public ResponseEntity<String> scheduleNotification(@RequestBody final NotificationRequest request) {
         notificationService.scheduleNotification(request);
         return ResponseEntity.ok("Notification scheduled successfully");
     }
