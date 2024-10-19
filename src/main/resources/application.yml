@@ -38,3 +38,6 @@ messaging:
       exchange: ${messaging.consume.exchange}
       routingKey: ${messaging.consume.exchange}.routing-key
 
+logging:
+  level:
+    root: info
